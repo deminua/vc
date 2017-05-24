@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @if (!auth()->guest())<meta name="api_token" content="{{ auth()->user()->api_token }}">@endif
@@ -25,8 +26,20 @@
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
+
+
+
     <div id="app">
-        @yield('content')
+    	<div class="container">
+		    <div class="row">
+		        <div class="col-md-12">
+                    
+                        <vclip2></vclip2>
+                    
+                </div>
+		    </div>
+		</div>
+
     </div>
 
     <!-- Scripts -->
