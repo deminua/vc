@@ -27,20 +27,79 @@
 </head>
 <body>
 
+<style type="text/css">
+    .dragdisable {
+        /*
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    filter: blur(5px);
+    */
+    /*
+    opacity: 0.5;
+    background-color: #000;
+    width:100%;
+    height: 100%;
+    display: block;
+    position: fixed;
+    z-index: -1;
+    */
+
+    }
+
+    .dragdisable {
+        
+        z-index:999; display: block; height: 100%; width:100%; position: fixed;
+        background-color: #000;
+        opacity: 0.8;
+    }
 
 
-    <div id="app">
+
+/*    .dragdisable .upload-action {
+        position: fixed;
+        left:20px;
+        right:20px;
+        top:20px;
+        bottom: 20px;
+    }*/
+
+    /*
+    .dragdisable .dz-message {
+        width:300px;
+    }
+
+    @dragleave="dragleave"  @dragover="dragover"
+    */
+</style>
+
+    <div id="app" @dragover.prevent="dragover">
+
+    <div @dragleave.prevent="dragleave" v-bind:class="{ dragdisable: isNoActive }"></div>
+
     	<div class="container">
 		    <div class="row">
 		        <div class="col-md-12">
-                    
+
+            <h1>Drag and Drop files uploader</h1>
+                        
                         <vclip2></vclip2>
                     
                 </div>
+
+
+                <div class="col-md-6">
+                    sdfasdf
+                </div>
+                <div class="col-md-6">
+                    sdfasdf
+                </div>
+
 		    </div>
 		</div>
 
+    
     </div>
+
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}"></script>

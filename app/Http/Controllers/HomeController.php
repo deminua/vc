@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -13,9 +14,21 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        #$this->middleware('auth');
     }
 
+    public function saveimage(Request $request)
+    {   
+
+        if($request->hasFile('file')){
+
+        $file = $request->file('file');
+        $filename = md5(time()) . '.' . $file->getClientOriginalExtension();
+        Storage::disk('public')->put('avatars/', $file, 'public');
+        }
+        return false;
+
+    }
     /**
      * Show the application dashboard.
      *

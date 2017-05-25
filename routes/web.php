@@ -26,7 +26,9 @@ Route::get('/vueclip', function () {
     return view('vue.vueclip');
 });
 
-Route::post('/post', function (Request $request) {
+Route::post('/post', 'HomeController@saveimage')->name('saveimage');
+
+Route::post('/post2', function (Request $request) {
     return dd($request->all());
 });
 
