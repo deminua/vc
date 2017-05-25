@@ -20,6 +20,7 @@ Vue.component('vclip2', require('./components/vclip2.vue'));
 
 //Vue.use(VueClip);
 
+
 const app = new Vue({
 	el: '#app',
 	data: {

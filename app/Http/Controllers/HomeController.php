@@ -17,13 +17,19 @@ class HomeController extends Controller
         #$this->middleware('auth');
     }
 
+    public function deleteimage(Request $request)
+    {
+            #return 'x';
+            return dd($request->all());
+    }
+
     public function saveimage(Request $request)
     {   
 
         if($request->hasFile('file')){
 
         $file = $request->file('file');
-        $filename = md5(time()) . '.' . $file->getClientOriginalExtension();
+        $filename = md5(str_random(128)) . '.' . $file->getClientOriginalExtension();
         Storage::disk('public')->put('avatars/', $file, 'public');
         // return [
         //     'id' => 123,
@@ -31,8 +37,8 @@ class HomeController extends Controller
         // ];
         return response()->json([
             'id' => time(),
-            'name' => $filename,
-            'success' => 'true'
+            'delete_id' => md5(str_random(128)),
+            'name' => $filename
         ]);
         #return json_encode(["success"=>"true"]);
         }

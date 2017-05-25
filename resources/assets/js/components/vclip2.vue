@@ -17,6 +17,8 @@ class="dropzone" id="dropzone"
 
 
     <template slot="clip-uploader-action" scope="params">
+
+
       <div v-bind:class="{'is-dragging': params.dragging}" class="upload-action">
         <div class="dz-message"><h2>Нажмите или перенесите сюда фотографии</h2></div>
       </div>
@@ -25,9 +27,9 @@ class="dropzone" id="dropzone"
 
     <template slot="clip-uploader-body" scope="props">
     <div class="uploader-files">
-    	<div class="uploader-file col-md-3" v-for="file in props.files">
+    	<div class="uploader-file col-md-3" v-for="(file, index) in props.files">
     		<div class="file-avatar">
-    			<img v-bind:src="file.dataUrl" alt="">
+    			<img v-bind:src="file.dataUrl" v-on:click="removedFile(file, index)">
     		</div>
 
     		<div class="file-details">
@@ -43,8 +45,7 @@ class="dropzone" id="dropzone"
     		<div class="file-meta" v-else>
     			<span class="file-size">{{ file.size }}</span>
     			<span class="file-status">{{ file.status }}</span>
-          <hr>
-          <a>iD: {{ file.customAttributes.id }}</a>
+          <span>{{ file.message }}</span>
     		</div>
     	</div>
     </div>
@@ -60,10 +61,10 @@ class="dropzone" id="dropzone"
     data () {
       return {
         options: {
-          url: '/post',
+          url: '/files',
           //maxFilesize: 4,
 		  maxFilesize: {
-		    limit: 3,
+		    limit: 5,
 		    message: '{{ filesize }} is greater than the {{ maxFilesize }}'
 		  },
           parallelUploads: 5,
@@ -76,7 +77,7 @@ class="dropzone" id="dropzone"
 		  acceptedFiles: 'images/*,image/*',
           //paramName: 'file'
         },
-        files: []
+        files: [],
       }
     },
 
@@ -90,22 +91,57 @@ class="dropzone" id="dropzone"
         this.files.push(file)
       },*/
 
-      removedFile (file) {
-        this
-        .$http
-        .post('delete/${file.customAttributes.id}')
-        .then(console.log)
-        .catch(console.error)
-      },
-
-      sending (file, xhr, formData) {
+      sending(file, xhr, formData) {
         formData.append('_token', Laravel.csrfToken)
       },
+
+
+      removedFile(file, index) {
+        //var accepted = confirm('Do you really want to delete the image?');
+        //console.log(file);
+        //console.log(index);
+console.log(this.$children);
+        //this.props.files.splice(index, 1)
+        //Vue.delete(this.files, file);
+        //console.log(file);
+        //Vue.delete(file);
+        //console.log(this.$children[index]);
+        //console.log(this.files);
+        var formData = new FormData();
+        formData.append('_token', Laravel.csrfToken);
+        formData.append('delete', file.customAttributes.delete_id);
+        this.$http.post('/files/delete', formData);
+
+
+        //this.$delete(this.files, file);
+        //this.files.$remove(file);
+
+        // this.$http.post('/files/delete/${file.customAttributes.id}'), {
+        //       _token: 'Laravel.csrfToken'
+        //     }
+
+        //   var formData = new FormData();
+        //   formData.append('foo', 'bar');
+
+        //   this.$http.post('/api', formData)
+
+        //.post('/files/delete')
+       // .post('/files/delete/'+file.customAttributes.id)
+        //.append('_token', Laravel.csrfToken)
+        //.then(console.log)
+        //.catch(console.error)
+        //.console.log(file)
+      },
+
+      // removedFile (file) {
+      //   console.log(file.customAttributes);
+      // },
 
       complete (file, status, xhr) {
         // Adding server id to be used for deleting
         // the file.
         file.addAttribute('id', JSON.parse(xhr.response).id)
+        file.addAttribute('delete', JSON.parse(xhr.response).delete_id)
         file.addAttribute('name', JSON.parse(xhr.response).name)
       },
 
@@ -235,18 +271,20 @@ body {
 
 	.uploader-files {
 		padding: 20px;
-		z-index: -3;
+		/*z-index: -3;*/
 	}
 	.uploader-file {
-		z-index: -2;
+		/*z-index: -2;*/
 	}
 	.file-progress {
-		background: #ccc;
-		height:20px;
+		background: #efefef;
+    height: 4px;
+    border-radius: 4px;
 	}
 	.file-progress .progress-indicator {
-		background: blue;
-		height:20px;
+		background: green;
+    height: 4px;
+    border-radius: 4px;
 	}
 
 
