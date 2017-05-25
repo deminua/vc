@@ -15,16 +15,32 @@ Vue.use(require('vue-resource'));
 import VueClip from 'vue-clip';
 Vue.use(VueClip);
 
-Vue.component('vclip', require('./components/vclip.vue'));
+//Vue.component('vclip', require('./components/vclip.vue'));
 Vue.component('vclip2', require('./components/vclip2.vue'));
 
 //Vue.use(VueClip);
 
 const app = new Vue({
 	el: '#app',
-	//template: '<App/>',
-	//components: { vclip }
+	data: {
+	  isNoActive: false,
+	},
+
+  methods: {
+    dragover: function (event) {
+    	event.dataTransfer.effectAllowed = "none";
+    	event.dataTransfer.dropEffect = "none";
+    	this.isNoActive = true;
+    },
+    dragleave: function (event) {
+     this.isNoActive = false;
+    },
+
+  },
+
 })
+
+//app.dragover()
 
 //Vue.use(VueWebsocket, "ws://localhost:5001").
 
