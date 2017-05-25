@@ -4,17 +4,21 @@ class="dropzone" id="dropzone"
 	:on-drop="drop"
 	:on-drag-enter="dragging"
 	:on-drag-leave="stoppedDragging"
+
+
+  :on-init="init"
 -->
   <vue-clip
 	:on-sending="sending"
 	:options="options"
-
+  :on-complete="complete"
+  :on-removed-file="removedFile"
   >
 
 
     <template slot="clip-uploader-action" scope="params">
       <div v-bind:class="{'is-dragging': params.dragging}" class="upload-action">
-        <div class="dz-message"><h2> Click or Drag and Drop files here upload </h2></div>
+        <div class="dz-message"><h2>Нажмите или перенесите сюда фотографии</h2></div>
       </div>
     <div class="nodrag"></div>
     </template>
@@ -28,7 +32,7 @@ class="dropzone" id="dropzone"
 
     		<div class="file-details">
     			<div class="file-name">
-    				{{ file.name }} <b>{{ file.status }}</b>
+    				{{ file.name }}</b>
     			</div>
     		</div>
 
@@ -39,6 +43,8 @@ class="dropzone" id="dropzone"
     		<div class="file-meta" v-else>
     			<span class="file-size">{{ file.size }}</span>
     			<span class="file-status">{{ file.status }}</span>
+          <hr>
+          <a>iD: {{ file.customAttributes.id }}</a>
     		</div>
     	</div>
     </div>
@@ -55,6 +61,12 @@ class="dropzone" id="dropzone"
       return {
         options: {
           url: '/post',
+          //maxFilesize: 4,
+		  maxFilesize: {
+		    limit: 3,
+		    message: '{{ filesize }} is greater than the {{ maxFilesize }}'
+		  },
+          parallelUploads: 5,
           /*
 		  acceptedFiles: {
 		    extensions: ['image/*'],
@@ -69,10 +81,36 @@ class="dropzone" id="dropzone"
     },
 
     methods: {
+
+/*      init (uploader) {
+        console.log('javascript uploader instance')
+      },
+
+      addedFile (file) {
+        this.files.push(file)
+      },*/
+
+      removedFile (file) {
+        this
+        .$http
+        .post('delete/${file.customAttributes.id}')
+        .then(console.log)
+        .catch(console.error)
+      },
+
       sending (file, xhr, formData) {
         formData.append('_token', Laravel.csrfToken)
       },
-      
+
+      complete (file, status, xhr) {
+        // Adding server id to be used for deleting
+        // the file.
+        file.addAttribute('id', JSON.parse(xhr.response).id)
+        file.addAttribute('name', JSON.parse(xhr.response).name)
+      },
+
+
+
       /*
       drop () {
       },
@@ -185,7 +223,7 @@ body {
 
 
   .upload-action.is-dragging, .upload-action:hover {
-    background: green;
+    background: #666;
         z-index: 9999;
         position: relative;
   }

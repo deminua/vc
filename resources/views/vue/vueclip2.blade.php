@@ -88,10 +88,10 @@
 
 
                 <div class="col-md-6">
-                    sdfasdf
+                    1
                 </div>
                 <div class="col-md-6">
-                    sdfasdf
+                    1
                 </div>
 
 		    </div>
