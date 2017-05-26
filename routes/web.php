@@ -53,7 +53,14 @@ Route::get('/', function () {
     return view('vue.v1');
 });
 
-Route::get('/users', function () {
+Route::resource('users', 'UserController');
+
+// Route::post('/users', 'UserController@index')->name('users');
+// Route::post('/users/create', 'UserController@store')->name('user.store');
+// Route::delete('/users', 'UserController@destroy')->name('user.destroy');
+
+
+Route::get('/users2', function () {
 	$users = \App\User::paginate(5);
 	return $users->toJson();
 	#return response()->json($users);
@@ -62,6 +69,10 @@ Route::get('/users', function () {
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 

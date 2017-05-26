@@ -15,10 +15,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'api_token',
     ];
 
-    protected $visible = ['id', 'name', 'updated_at'];
+    protected $visible = ['id', 'name', 'email'];
 
     /**
      * The attributes that should be hidden for arrays.
