@@ -803,6 +803,21 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = Laravel.csrfToken;
 
 var app = new Vue({
   el: '#app',
+  data: {
+    isNoActive: false
+  },
+
+  methods: {
+    dragover: function dragover(event) {
+      event.dataTransfer.effectAllowed = "none";
+      event.dataTransfer.dropEffect = "none";
+      this.isNoActive = true;
+    },
+    dragleave: function dragleave(event) {
+      this.isNoActive = false;
+    }
+
+  },
   components: { Users: __WEBPACK_IMPORTED_MODULE_1__components_Users_vue___default.a }
 });
 
@@ -49013,6 +49028,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 //import User from './components/User.vue';
 //Vue.component('user', require('./components/User.vue'))
@@ -49025,6 +49045,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       users: [],
       errors: [],
       pages: [],
+      // pages_default: {
+      //   'current_page': 1,
+      // },
       user: {
         name: '',
         email: ''
@@ -49041,7 +49064,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     fetchUsers: function fetchUsers() {
       var _this = this;
 
-      this.$http.get('/users').then(function (response) {
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+
+
+      // if(page) {
+      //   this.pages_default.current_page = page;
+      // } else {
+      //   this.pages_default.current_page = this.pages.current_page;
+      // }
+
+      this.$http.get('/users?page=' + page).then(function (response) {
 
         //or Use "no paginate"
         //this.users = response.data.users;
@@ -49074,20 +49106,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this4 = this;
 
       this.$http.post('/users', this.user).then(function (response) {
-        _this4.users.push(response.data.user);
+        //this.users.push(response.data.user);
         _this4.user = { name: '', email: '' };
-        console.log(response.data);
+        _this4.fetchUsers();
+        //console.log(response.data);
       }, function (response) {
         _this4.errors = response.data;
       });
     },
-    deleteUser: function deleteUser(user) {
+    deleteUser: function deleteUser(user, page) {
       var _this5 = this;
 
       this.$http.delete('/users/' + user.id).then(function (response) {
-        var index = _this5.users.indexOf(user);
-        _this5.users.splice(index, 1);
-        console.log(response.data);
+        //let index = this.users.indexOf(user);
+        //this.users.splice(index, 1);
+        if (_this5.users.length <= 1) {
+          page = page - 1;
+        }
+        _this5.fetchUsers(page);
+        //console.log(response.data);
       });
     }
   }
@@ -49208,8 +49245,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "user": user
       },
       on: {
-        "deleteuser": _vm.deleteUser,
-        "update-user": _vm.fetchUsers
+        "deleteuser": function($event) {
+          _vm.deleteUser(user, _vm.pages.current_page)
+        },
+        "update-user": function($event) {
+          _vm.fetchUsers(_vm.pages.current_page)
+        }
       }
     })
   })), _vm._v(" "), _c('tfoot', [_c('tr', [_c('td', {
@@ -49225,7 +49266,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.fetchPrevUsers
     }
-  }, [_vm._v("Prev")]) : _vm._e(), _vm._v(" "), (_vm.pages.next_page_url) ? _c('button', {
+  }, [_vm._v("Prev")]) : _vm._e(), _vm._v(" "), _vm._l((_vm.pages.last_page), function(n) {
+    return _c('span', [(_vm.pages.current_page === n) ? _c('button', {
+      staticClass: "btn btn-primary active disabled"
+    }, [_vm._v(_vm._s(n))]) : _c('button', {
+      staticClass: "btn btn-default",
+      on: {
+        "click": function($event) {
+          _vm.fetchUsers(n)
+        }
+      }
+    }, [_vm._v(_vm._s(n))])])
+  }), _vm._v(" "), (_vm.pages.next_page_url) ? _c('button', {
     staticClass: "btn btn-default",
     attrs: {
       "type": "button"
@@ -49233,7 +49285,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.fetchNextUsers
     }
-  }, [_vm._v("Next")]) : _vm._e()])])])], 1)])
+  }, [_vm._v("Next")]) : _vm._e()], 2)])])], 1)])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "form-group"
@@ -49313,7 +49365,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.$http.patch('/users/' + oldUser.id, newUser).then(function (response) {
         _this.$emit('update-user');
         _this.cancelEdit();
-        console.log(response.data);
+        //console.log(response.data);
       });
     }
   }
@@ -49400,7 +49452,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }) : _c('span', [_vm._v(_vm._s(_vm.user.email))])]), _vm._v(" "), _c('td', [(!_vm.edit) ? _c('button', {
-    staticClass: "btn btn-info",
+    staticClass: "btn btn-success",
     attrs: {
       "type": "button"
     },

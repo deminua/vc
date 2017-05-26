@@ -27,5 +27,20 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = Laravel.csrfToken;
 
 const app = new Vue({
 	el: '#app',
+	data: {
+	  isNoActive: false,
+	},
+
+  methods: {
+    dragover: function (event) {
+    	event.dataTransfer.effectAllowed = "none";
+    	event.dataTransfer.dropEffect = "none";
+    	this.isNoActive = true;
+    },
+    dragleave: function (event) {
+     this.isNoActive = false;
+    },
+
+  },
 	components: { Users }
 });

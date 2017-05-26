@@ -10,7 +10,7 @@
         <span v-else>{{ user.email }}</span>
     </td>
     <td>
-      <button v-on:click="editUser" type="button" class="btn btn-info" v-if="!edit">Edit</button>
+      <button v-on:click="editUser" type="button" class="btn btn-success" v-if="!edit">Edit</button>
       <button v-on:click="updateUser(user, editForm)" type="button" class="btn btn-primary" v-if="edit">Update</button>
       <button v-on:click="cancelEdit" type="button" class="btn btn-default" v-if="edit">Cancel</button>
       <button v-on:click="$emit('deleteuser', user)" type="button" class="btn btn-danger" v-if="!edit">Delete</button>
@@ -48,7 +48,7 @@ export default {
         this.$http.patch('/users/'+oldUser.id, newUser).then(response => {
           this.$emit('update-user');
           this.cancelEdit();
-          console.log(response.data);
+          //console.log(response.data);
         })
       }
     }
