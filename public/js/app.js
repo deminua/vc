@@ -49109,6 +49109,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //this.users.push(response.data.user);
         _this4.user = { name: '', email: '' };
         _this4.fetchUsers();
+        _this4.errors = '';
         //console.log(response.data);
       }, function (response) {
         _this4.errors = response.data;

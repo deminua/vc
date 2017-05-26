@@ -127,6 +127,7 @@ export default {
           //this.users.push(response.data.user);
           this.user = {name: '', email: ''};
           this.fetchUsers();
+          this.errors = '';
           //console.log(response.data);
         }, response => {
           this.errors = response.data;
