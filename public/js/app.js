@@ -49334,6 +49334,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'ProfileUser',
@@ -49344,7 +49348,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       editForm: {
         name: '',
         email: ''
-      }
+      },
+      editPencil: 'glyphicon glyphicon-pencil',
+      show: false
+
     };
   },
 
@@ -49358,6 +49365,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.edit = false;
       this.editForm.name = '';
       this.editForm.email = '';
+      this.show = false;
     },
     updateUser: function updateUser(oldUser, newUser) {
       var _this = this;
@@ -49375,6 +49383,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ }),
 /* 61 */
 /***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(64)
 
 var Component = __webpack_require__(38)(
   /* script */
@@ -49431,7 +49443,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.editForm.name = $event.target.value
       }
     }
-  }) : _c('span', [_vm._v(_vm._s(_vm.user.name))])]), _vm._v(" "), _c('td', [(_vm.edit) ? _c('input', {
+  }) : _c('span', {
+    staticClass: "cursor",
+    on: {
+      "click": _vm.editUser,
+      "mouseover": function($event) {
+        _vm.show = !_vm.show
+      },
+      "mouseleave": function($event) {
+        _vm.show = false
+      }
+    }
+  }, [_vm._v("\n      " + _vm._s(_vm.user.name) + "\n      "), _c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.show),
+      expression: "show"
+    }],
+    class: [_vm.editPencil]
+  })])]), _vm._v(" "), _c('td', [(_vm.edit) ? _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -49495,6 +49526,39 @@ if (false) {
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-34abb2cc", module.exports)
   }
+}
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(32)();
+exports.push([module.i, "\n.cursor {\n  cursor: pointer;\n}\n", ""]);
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(63);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(42)("be9a66c6", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-34abb2cc\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./User.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-34abb2cc\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./User.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
 }
 
 /***/ })

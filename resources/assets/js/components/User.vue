@@ -3,7 +3,11 @@
   <tr>
     <td>
       <input type="text" class="form-control" v-model="editForm.name" v-if="edit">
-      <span v-else>{{ user.name }}</span>
+      <span class="cursor" v-on:click="editUser" @mouseover="show = !show" @mouseleave="show = false" v-else>
+        {{ user.name }}
+        <span v-bind:class="[editPencil]" v-show="show"></span>
+      </span>
+
     </td>
     <td>
       <input type="text" class="form-control" v-model="editForm.email" v-if="edit">
@@ -29,7 +33,10 @@ export default {
         editForm: {
           name: '',
           email: ''
-        }
+        },
+        editPencil: 'glyphicon glyphicon-pencil',
+        show: false,
+
       }
     },
     methods: {
@@ -42,6 +49,7 @@ export default {
         this.edit = false;
         this.editForm.name = '';
         this.editForm.email = '';
+        this.show = false;
 
       },
       updateUser(oldUser, newUser){
@@ -55,3 +63,10 @@ export default {
 
 }
 </script>
+
+
+<style media="screen">
+  .cursor {
+    cursor: pointer;
+  }
+</style>
