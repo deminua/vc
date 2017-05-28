@@ -56,6 +56,10 @@ class="dropzone" id="dropzone"
 </template>
 
 <script>
+
+    import VueClip from 'vue-clip';
+    Vue.use(VueClip);
+
   export default {
 
     data () {

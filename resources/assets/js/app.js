@@ -12,8 +12,8 @@ require('./bootstrap');
 window.Vue = require('vue');
 Vue.use(require('vue-resource'));
 
-import VueClip from 'vue-clip';
-Vue.use(VueClip);
+//import VueClip from 'vue-clip';
+//Vue.use(VueClip);
 
 //Vue.component('vclip', require('./components/vclip.vue'));
 Vue.component('vclip2', require('./components/vclip2.vue'));
